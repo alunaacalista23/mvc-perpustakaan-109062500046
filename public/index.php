@@ -23,6 +23,8 @@ if ($page !== 'buku') {
 }
  
 match ($action) {
+    'create' => $controller->create(),
+    'store'  => $controller->store(),
     'index' => $controller->index(),
     default => (function () {
         http_response_code(404);
