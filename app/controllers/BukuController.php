@@ -156,4 +156,51 @@ class BukuController
             exit('Metode tidak diizinkan.');
         }
     }
+
+    public function edit(): void
+    {
+        $id   = (int) ($_GET['id'] ?? 0);
+        $buku = $this->model->findById($id);
+ 
+        if (!$buku) {
+            $this->notFound('Data buku tidak ditemukan.');
+        }
+ 
+        $flash = $this->pullFlash();
+        $form  = $this->pullOld() ?: $buku;
+        require __DIR__ . '/../views/buku/edit.php';
+    }
+ 
+    public function update(): void
+    {
+        $this->requirePost();
+        $id = (int) ($_POST['id'] ?? 0);
+ 
+        if (!$this->model->findById($id)) {
+            $this->notFound('Data buku tidak ditemukan.');
+        }
+ 
+        [$data, $errors] = $this->validateInput($_POST);
+        $back = 'index.php?page=buku&action=edit&id=' . $id;
+ 
+        if ($errors) {
+            $this->fail(implode(' ', $errors), $_POST, $back);
+        }
+ 
+        try {
+            $this->model->update($id, $data);
+        } catch (PDOException $e) {
+            $this->fail($this->dbMessage($e), $_POST, $back);
+        }
+ 
+        $this->flash('success', 'Data buku berhasil diperbarui.');
+        $this->redirect('index.php?page=buku');
+    }
+ 
+    private function notFound(string $message): void
+    {
+        http_response_code(404);
+        exit($message);
+    }
+
 }

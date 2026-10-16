@@ -26,6 +26,9 @@ match ($action) {
     'create' => $controller->create(),
     'store'  => $controller->store(),
     'index' => $controller->index(),
+    'edit'   => $controller->edit(),
+    'update' => $controller->update(),
+
     default => (function () {
         http_response_code(404);
         exit('Action tidak ditemukan.');
