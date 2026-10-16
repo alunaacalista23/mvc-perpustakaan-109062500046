@@ -53,4 +53,13 @@ class Buku
         ]);
     }
 
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare('DELETE FROM buku WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+ 
+        return $stmt->rowCount() > 0;
+    }
+
+
 }

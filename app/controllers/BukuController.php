@@ -203,4 +203,24 @@ class BukuController
         exit($message);
     }
 
+        public function delete(): void
+    {
+        $this->requirePost();
+        $id = (int) ($_POST['id'] ?? 0);
+ 
+        try {
+            $deleted = $this->model->delete($id);
+        } catch (PDOException $e) {
+            $deleted = false;
+        }
+ 
+        if ($deleted) {
+            $this->flash('success', 'Buku berhasil dihapus.');
+        } else {
+            $this->flash('error', 'Buku gagal dihapus atau tidak ditemukan.');
+        }
+        $this->redirect('index.php?page=buku');
+    }
+
+
 }

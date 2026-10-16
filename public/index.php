@@ -28,7 +28,7 @@ match ($action) {
     'index' => $controller->index(),
     'edit'   => $controller->edit(),
     'update' => $controller->update(),
-
+    'delete' => $controller->delete(),
     default => (function () {
         http_response_code(404);
         exit('Action tidak ditemukan.');
